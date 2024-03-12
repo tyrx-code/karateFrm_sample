@@ -8,8 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker Image
-      run: |
-        docker build . --file Dockerfile --tag mydockertest
-        docker images
+      - name: Checkout code
+        uses: actions/checkout@v3    
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: "Dockerfile"
+          tags: mydockertest:latest
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: false
+      - name: Run DockerContainer
+        uses: addnab/docker-run-action@v3
+        with:
+          image: mydockertest:latest
+          run: mvn clean test
