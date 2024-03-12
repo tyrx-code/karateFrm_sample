@@ -10,8 +10,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3    
-      - uses: docker/setup-buildx-action@v2
-      - uses: docker/build-push-action@v4
+      - name: Set Docker Env
+        uses: docker/setup-buildx-action@v2
+      - name: Build Docker Image and Push if needed
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: "Dockerfile"
@@ -24,4 +26,4 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: mydockertest:latest
-          run: mvn clean test
+          run: mvn clean test -DargLine="-Dkarate.env=test" "-Dkarate.options=--tags @smoke"
