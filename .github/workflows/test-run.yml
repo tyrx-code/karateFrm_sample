@@ -25,9 +25,9 @@ jobs:
           mkdir -p resultsFolder
           pwd
           ls
-          mv /home/runner/work/karateFrm_sample/karateFrm_sample/target/karate-reports* resultsFolder
+          mv /home/runner/work/karateFrm_sample/karateFrm_sample/target* resultsFolder
 
-    - name: Output the run details
+    - name: Upload Test Results
       if: always()
       uses: actions/upload-artifact@v2
       with:
